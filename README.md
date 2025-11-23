@@ -215,16 +215,88 @@ const VotrePage = () => {
 export default VotrePage;
 ```
 
+## � Déploiement
+
+### Déployer sur Render.com (Recommandé)
+
+Ce projet est prêt pour être déployé sur **Render.com** avec **MongoDB Atlas**.
+
+#### 📚 Guides disponibles
+
+| Guide | Description | Temps |
+|-------|-------------|-------|
+| **[INDEX_GUIDES.md](./INDEX_GUIDES.md)** | 📖 Index de tous les guides | 2 min |
+| **[DEPLOIEMENT_RAPIDE.md](./DEPLOIEMENT_RAPIDE.md)** | ⚡ Guide rapide | 25 min |
+| **[CHECKLIST_DEPLOIEMENT.md](./CHECKLIST_DEPLOIEMENT.md)** | ✅ Checklist complète | 35 min |
+| **[DEPLOIEMENT_RENDER.md](./DEPLOIEMENT_RENDER.md)** | 📖 Guide ultra-détaillé | 45 min |
+| **[GUIDE_VISUEL_DEPLOIEMENT.txt](./GUIDE_VISUEL_DEPLOIEMENT.txt)** | 🎨 Architecture visuelle | 10 min |
+| **[COMMANDES_RENDER.md](./COMMANDES_RENDER.md)** | 🛠️ Commandes utiles | Référence |
+| **[POURQUOI_RENDER.md](./POURQUOI_RENDER.md)** | 🤔 Comparatif hébergeurs | 10 min |
+
+#### 🎯 Démarrage rapide
+
+1. **Lire** : [README_DEPLOIEMENT.md](./README_DEPLOIEMENT.md) (2 min)
+2. **Suivre** : [DEPLOIEMENT_RAPIDE.md](./DEPLOIEMENT_RAPIDE.md) (25 min)
+3. **Référence** : [COMMANDES_RENDER.md](./COMMANDES_RENDER.md) (si besoin)
+
+**Total : ~30 minutes | Coût : 0€ (plan gratuit)**
+
+#### 🎉 Résultat
+
+Ton application sera accessible publiquement à :
+- **Frontend** : `https://memories-frontend.onrender.com`
+- **Admin** : `https://memories-frontend.onrender.com/admin`
+- **API** : `https://memories-backend.onrender.com/api`
+
+---
+
+## ✨ Nouvelles Fonctionnalités (Novembre 2025)
+
+### Interface Admin Ultra-Moderne
+- ✅ Dashboard complet avec statistiques
+- ✅ Gestion des utilisateurs (promouvoir admin, activer/désactiver)
+- ✅ Modération des souvenirs
+- ✅ Logs d'activité admin
+- ✅ Recherche et filtres avancés
+- ✅ Design glassmorphism avec Framer Motion
+
+### Système de Thèmes
+- ✅ 6 thèmes visuels (Default, Cyberpunk, Zen, Retro, Pride, Hacker)
+- ✅ Changement dynamique avec CSS Variables
+- ✅ Persistance des préférences (localStorage)
+- ✅ Transitions fluides
+
+### Duels de Souvenirs
+- ✅ Vote entre 2 souvenirs aléatoires
+- ✅ Statistiques de votes en temps réel
+- ✅ Calcul automatique des pourcentages
+- ✅ Karma bonus pour les gagnants
+
+### Timeline Améliorée
+- ✅ Affichage chronologique des souvenirs
+- ✅ Filtres par type et mood
+- ✅ Animations d'entrée fluides
+- ✅ Cards interactives
+
+### Profil Enrichi
+- ✅ Statistiques détaillées (karma, souvenirs, likes)
+- ✅ Badge de rôle (admin/user)
+- ✅ Liste complète des souvenirs créés
+- ✅ Bio et avatar personnalisables
+
+---
+
 ## 📝 TODO / Améliorations Futures
 
-- [ ] Système de notifications en temps réel
+- [ ] Système de notifications en temps réel (WebSocket)
 - [ ] Messagerie privée entre utilisateurs
 - [ ] Albums de souvenirs
-- [ ] Recherche avancée avec filtres multiples
 - [ ] Export de souvenirs en PDF
-- [ ] Intégration d'un système de badges/achievements
 - [ ] Mode collaboratif pour les souvenirs de groupe
-- [ ] Timeline chronologique interactive
+- [ ] Intégration Cloudinary pour uploads persistants
+- [ ] Service Worker pour PWA (mode offline)
+- [ ] Compression d'images automatique
+- [ ] Système de rapports/signalements
 
 ## 🤝 Contribution
 
