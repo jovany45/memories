@@ -1,0 +1,42 @@
+# Configuration Render.com pour déploiement automatique
+# Ce fichier configure le backend et le frontend
+
+services:
+  # Backend API
+  - type: web
+    name: memories-backend
+    runtime: node
+    region: frankfurt # Ou oregon/singapore selon ta localisation
+    plan: free # Plan gratuit (750h/mois)
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromGroup: backend-env
+      - key: MONGODB_URI
+        fromGroup: backend-env
+        sync: false # Variable secrète, ne pas sync automatiquement
+      - key: JWT_SECRET
+        fromGroup: backend-env
+        sync: false
+      - key: FRONTEND_URL
+        fromGroup: backend-env
+    healthCheckPath: /api/health
+
+  # Frontend React
+  - type: web
+    name: memories-frontend
+    runtime: static
+    region: frankfurt
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromGroup: frontend-env
