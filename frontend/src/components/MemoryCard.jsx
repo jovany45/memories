@@ -3,6 +3,7 @@ import { Heart, MessageCircle, Eye, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { BASE_URL } from '../api/axios';
 
 const MemoryCard = ({ memory }) => {
   const moodEmojis = {
@@ -33,13 +34,13 @@ const MemoryCard = ({ memory }) => {
           <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-dark-800">
             {memory.type === 'video' ? (
               <video
-                src={`http://localhost:5000${memory.mediaUrl}`}
+                src={`${BASE_URL}${memory.mediaUrl}`}
                 className="w-full h-full object-cover"
                 preload="metadata"
               />
             ) : (
               <img
-                src={`http://localhost:5000${memory.mediaUrl}`}
+                src={`${BASE_URL}${memory.mediaUrl}`}
                 alt={memory.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />

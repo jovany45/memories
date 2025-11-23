@@ -4,6 +4,7 @@ import { Calendar, Clock, Heart, MessageCircle, GitBranch, Sparkles } from 'luci
 import { memoryAPI } from '../api';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { BASE_URL } from '../api/axios';
 
 const Timeline = () => {
   const [memories, setMemories] = useState([]);
@@ -222,13 +223,13 @@ const Timeline = () => {
                             <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                               {memory.type === 'photo' ? (
                                 <img
-                                  src={`http://localhost:5000${memory.fileUrl}`}
+                                  src={`${BASE_URL}${memory.fileUrl}`}
                                   alt={memory.title}
                                   className="w-full h-full object-cover"
                                 />
                               ) : (
                                 <video
-                                  src={`http://localhost:5000${memory.fileUrl}`}
+                                  src={`${BASE_URL}${memory.fileUrl}`}
                                   className="w-full h-full object-cover"
                                 />
                               )}

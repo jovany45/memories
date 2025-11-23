@@ -7,6 +7,7 @@ import { fr } from 'date-fns/locale';
 import { memoryAPI } from '../api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { BASE_URL } from '../api/axios';
 
 const MemoryDetail = () => {
   const { id } = useParams();
@@ -138,13 +139,13 @@ const MemoryDetail = () => {
             <div className="mb-6 rounded-lg overflow-hidden">
               {memory.type === 'video' ? (
                 <video
-                  src={`http://localhost:5000${memory.mediaUrl}`}
+                  src={`${BASE_URL}${memory.mediaUrl}`}
                   controls
                   className="w-full max-h-[600px] object-contain bg-black"
                 />
               ) : (
                 <img
-                  src={`http://localhost:5000${memory.mediaUrl}`}
+                  src={`${BASE_URL}${memory.mediaUrl}`}
                   alt={memory.title}
                   className="w-full max-h-[600px] object-contain bg-dark-800"
                 />

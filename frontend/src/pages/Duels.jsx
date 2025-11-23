@@ -4,6 +4,7 @@ import { Sword, Trophy, Clock, Users } from 'lucide-react';
 import { featuresAPI, memoryAPI } from '../api';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { BASE_URL } from '../api/axios';
 
 const Duels = () => {
   const [duels, setDuels] = useState([]);
@@ -199,13 +200,13 @@ const Duels = () => {
                               <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
                                 {memory.type === 'photo' ? (
                                   <img
-                                    src={`http://localhost:5000${memory.fileUrl}`}
+                                    src={`${BASE_URL}${memory.fileUrl}`}
                                     alt={memory.title}
                                     className="w-full h-full object-cover"
                                   />
                                 ) : (
                                   <video
-                                    src={`http://localhost:5000${memory.fileUrl}`}
+                                    src={`${BASE_URL}${memory.fileUrl}`}
                                     className="w-full h-full object-cover"
                                   />
                                 )}

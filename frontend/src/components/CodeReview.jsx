@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Code, ThumbsUp, AlertCircle, MessageCircle, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { memoryAPI } from '../api';
+import { BASE_URL } from '../api/axios';
 
 const CodeReview = ({ memory, onReviewAdded }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -182,7 +183,7 @@ const CodeReview = ({ memory, onReviewAdded }) => {
                     <div className="flex items-center space-x-2">
                       {review.reviewer?.profilePicture ? (
                         <img
-                          src={`http://localhost:5000${review.reviewer.profilePicture}`}
+                          src={`${BASE_URL}${review.reviewer.profilePicture}`}
                           alt={review.reviewer.name}
                           className="w-6 h-6 rounded-full object-cover"
                         />
