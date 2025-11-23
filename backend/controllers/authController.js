@@ -54,7 +54,8 @@ export const register = async (req, res) => {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
-        bio: user.bio
+        bio: user.bio,
+        role: user.role
       }
     });
   } catch (error) {
@@ -136,7 +137,16 @@ export const getMe = async (req, res) => {
       .populate('memories');
 
     res.json({
-      user
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        bio: user.bio,
+        role: user.role,
+        karma: user.karma,
+        isActive: user.isActive
+      }
     });
   } catch (error) {
     console.error('Get me error:', error);

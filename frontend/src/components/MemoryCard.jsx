@@ -81,10 +81,13 @@ const MemoryCard = ({ memory }) => {
 
           {/* Author & Stats */}
           <div className="flex items-center justify-between pt-3 border-t border-white/10">
-            <Link 
-              to={`/profile/${memory.author._id}`}
-              className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-              onClick={(e) => e.stopPropagation()}
+            <div 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = `/profile/${memory.author._id}`;
+              }}
+              className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer"
             >
               <img
                 src={memory.author.avatar}
@@ -92,7 +95,7 @@ const MemoryCard = ({ memory }) => {
                 className="w-8 h-8 rounded-full border-2 border-primary-500"
               />
               <span className="text-sm text-gray-300">{memory.author.username}</span>
-            </Link>
+            </div>
 
             <div className="flex items-center space-x-3 text-gray-400 text-sm">
               <span className="flex items-center space-x-1">

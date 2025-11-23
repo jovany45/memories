@@ -16,12 +16,14 @@ const Timeline = () => {
 
   const fetchMemories = async () => {
     try {
-      const data = await memoryAPI.getAll();
+      const data = await memoryAPI.getAllMemories();
       // Sort par date décroissante
-      const sorted = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const memoriesArray = data.memories || [];
+      const sorted = memoriesArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setMemories(sorted);
     } catch (error) {
       toast.error('Erreur lors du chargement des souvenirs');
+      setMemories([]);
     } finally {
       setLoading(false);
     }

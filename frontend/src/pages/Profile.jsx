@@ -19,10 +19,18 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    fetchProfile();
+    if (id) {
+      fetchProfile();
+    }
   }, [id]);
 
   const fetchProfile = async () => {
+    if (!id) {
+      toast.error('ID utilisateur manquant');
+      setLoading(false);
+      return;
+    }
+    
     try {
       const data = await userAPI.getUserProfile(id);
       setProfile(data.user);

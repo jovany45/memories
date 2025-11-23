@@ -4,7 +4,7 @@ import { Palette, Check } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const ThemeSwitcher = ({ isOpen, onClose }) => {
-  const { theme, setTheme, themes } = useTheme();
+  const { currentTheme, changeTheme, allThemes } = useTheme();
 
   if (!isOpen) return null;
 
@@ -32,15 +32,15 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
 
         {/* Themes Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {Object.entries(themes).map(([key, themeData]) => {
-            const isActive = theme === key;
+          {Object.entries(allThemes).map(([key, themeData]) => {
+            const isActive = currentTheme === key;
 
             return (
               <motion.div
                 key={key}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setTheme(key)}
+                onClick={() => changeTheme(key)}
                 className={`relative cursor-pointer rounded-xl overflow-hidden ${
                   isActive ? 'ring-4 ring-primary-500' : ''
                 }`}

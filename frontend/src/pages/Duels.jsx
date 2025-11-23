@@ -17,17 +17,21 @@ const Duels = () => {
   const fetchDuels = async () => {
     try {
       const data = await featuresAPI.getActiveDuels();
-      setDuels(data);
+      setDuels(data.duels || []);
     } catch (error) {
       toast.error('Erreur lors du chargement des duels');
+      setDuels([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleVote = async (duelId, memoryId) => {
+  const handleVote = async (duelId, memoryId, duel) => {
     try {
-      await featuresAPI.voteInDuel(duelId, memoryId);
+      // Déterminer si c'est memory1 (choice: 1) ou memory2 (choice: 2)
+      const choice = duel.memory1._id === memoryId ? 1 : 2;
+      
+      await featuresAPI.voteInDuel(duelId, choice);
       toast.success('Vote enregistré ! +5 Karma 🎉');
       fetchDuels();
     } catch (error) {
@@ -35,11 +39,13 @@ const Duels = () => {
     }
   };
 
-  const getVotePercentage = (memory, duel) => {
+  const getVotePercentage = (memory, duel, memIndex) => {
     const totalVotes = duel.votes.length;
     if (totalVotes === 0) return 0;
     
-    const memoryVotes = duel.votes.filter(v => v.memory.toString() === memory._id.toString()).length;
+    // memIndex: 0 pour memory1, 1 pour memory2
+    const choice = memIndex + 1;
+    const memoryVotes = duel.votes.filter(v => v.choice === choice).length;
     return Math.round((memoryVotes / totalVotes) * 100);
   };
 
@@ -63,8 +69,8 @@ const Duels = () => {
     return `${hours}h ${minutes}m`;
   };
 
-  const activeDuels = duels.filter(d => d.status === 'active');
-  const finishedDuels = duels.filter(d => d.status === 'finished');
+  const activeDuels = Array.isArray(duels) ? duels.filter(d => d.status === 'active') : [];
+  const finishedDuels = Array.isArray(duels) ? duels.filter(d => d.status === 'finished') : [];
 
   if (loading) {
     return (
@@ -170,7 +176,7 @@ const Duels = () => {
                 {/* Dueling Memories */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[duel.memory1, duel.memory2].map((memory, memIndex) => {
-                    const percentage = getVotePercentage(memory, duel);
+                    const percentage = getVotePercentage(memory, duel, memIndex);
                     const isWinner = !isActive && percentage > 50;
 
                     return (
@@ -221,7 +227,7 @@ const Duels = () => {
                               <button
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  handleVote(duel._id, memory._id);
+                                  handleVote(duel._id, memory._id, duel);
                                 }}
                                 className="w-full bg-gradient-to-r from-primary-500 to-purple-500 hover:from-primary-600 hover:to-purple-600 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-[1.02]"
                               >
@@ -232,7 +238,7 @@ const Duels = () => {
                                 <div className="flex items-center justify-between mb-2">
                                   <span className="text-white font-bold">{percentage}%</span>
                                   <span className="text-gray-400 text-sm">
-                                    {duel.votes.filter(v => v.memory.toString() === memory._id.toString()).length} vote(s)
+                                    {duel.votes.filter(v => v.choice === (memIndex + 1)).length} vote(s)
                                   </span>
                                 </div>
                                 <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">

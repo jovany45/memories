@@ -11,6 +11,7 @@ import Leaderboard from './pages/Leaderboard';
 import Timeline from './pages/Timeline';
 import Duels from './pages/Duels';
 import Achievements from './pages/Achievements';
+import AdminDashboard from './pages/AdminDashboard';
 import NotFound from './pages/NotFound';
 
 // Protected Route Component
@@ -61,6 +62,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateMemory />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
             </ProtectedRoute>
           } 
         />

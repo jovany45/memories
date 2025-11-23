@@ -11,6 +11,7 @@ import userRoutes from './routes/users.js';
 import memoryRoutes from './routes/memories.js';
 import gamificationRoutes from './routes/gamification.js';
 import featuresRoutes from './routes/features.js';
+import adminRoutes from './routes/admin.js';
 
 // Configuration
 dotenv.config();
@@ -34,6 +35,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/memories', memoryRoutes);
 app.use('/api/gamification', gamificationRoutes);
 app.use('/api/features', featuresRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

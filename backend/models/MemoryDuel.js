@@ -26,7 +26,7 @@ const memoryDuelSchema = new mongoose.Schema({
   endDate: Date,
   status: {
     type: String,
-    enum: ['active', 'ended'],
+    enum: ['active', 'finished', 'ended'],
     default: 'active'
   }
 }, {

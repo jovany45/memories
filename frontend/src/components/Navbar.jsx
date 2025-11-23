@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Home, Plus, User, LogOut, Menu, X, Trophy, Clock, Sword, Palette } from 'lucide-react';
+import { Home, Plus, User, LogOut, Menu, X, Trophy, Clock, Sword, Palette, Shield } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -52,6 +52,16 @@ const Navbar = () => {
 
             {isAuthenticated ? (
               <>
+                {user?.role === 'admin' && (
+                  <Link 
+                    to="/admin" 
+                    className="flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-4 py-2 rounded-lg transition-all"
+                  >
+                    <Shield size={20} />
+                    <span className="font-bold">Admin</span>
+                  </Link>
+                )}
+                
                 <Link 
                   to="/create" 
                   className="btn-primary flex items-center space-x-2"
@@ -154,6 +164,16 @@ const Navbar = () => {
 
               {isAuthenticated ? (
                 <>
+                  {user?.role === 'admin' && (
+                    <Link 
+                      to="/admin" 
+                      className="block py-2 text-yellow-400 hover:text-yellow-300 transition-colors font-bold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      👑 Admin Dashboard
+                    </Link>
+                  )}
+                  
                   <Link 
                     to="/create" 
                     className="block py-2 hover:text-primary-400 transition-colors"
