@@ -12,6 +12,7 @@ const MemoryCard = ({ memory }) => {
   const [videoThumbnail, setVideoThumbnail] = useState(null);
   const videoRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
+  const previewTimeoutRef = useRef(null);
 
   // Générer une miniature de la vidéo
   useEffect(() => {
@@ -41,6 +42,9 @@ const MemoryCard = ({ memory }) => {
     return () => {
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
+      }
+      if (previewTimeoutRef.current) {
+        clearTimeout(previewTimeoutRef.current);
       }
     };
   }, []);
@@ -78,6 +82,23 @@ const MemoryCard = ({ memory }) => {
     }
   };
 
+  const handleCardHover = (isEntering) => {
+    // Annuler tout timeout de preview en cours
+    if (previewTimeoutRef.current) {
+      clearTimeout(previewTimeoutRef.current);
+      previewTimeoutRef.current = null;
+    }
+
+    if (isEntering) {
+      // Attendre 4 secondes avant d'afficher l'overlay
+      previewTimeoutRef.current = setTimeout(() => {
+        setShowPreview(true);
+      }, 4000);
+    } else {
+      setShowPreview(false);
+    }
+  };
+
   const moodEmojis = {
     funny: '😂',
     emotional: '🥺',
@@ -107,8 +128,8 @@ const MemoryCard = ({ memory }) => {
       <motion.div
         whileHover={{ y: -8, scale: 1.02 }}
         className="card group cursor-pointer overflow-hidden relative"
-        onMouseEnter={() => setShowPreview(true)}
-        onMouseLeave={() => setShowPreview(false)}
+        onMouseEnter={() => handleCardHover(true)}
+        onMouseLeave={() => handleCardHover(false)}
       >
         <Link to={`/memory/${memory._id}`}>
         {/* Media Preview */}
