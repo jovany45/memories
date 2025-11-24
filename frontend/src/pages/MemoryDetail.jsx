@@ -148,13 +148,13 @@ const MemoryDetail = () => {
             <div className="mb-6 rounded-lg overflow-hidden">
               {memory.type === 'video' ? (
                 <video
-                  src={`${BASE_URL}${memory.mediaUrl}`}
+                  src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                   controls
                   className="w-full max-h-[600px] object-contain bg-black"
                 />
               ) : (
                 <img
-                  src={`${BASE_URL}${memory.mediaUrl}`}
+                  src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                   alt={memory.title}
                   className="w-full max-h-[600px] object-contain bg-dark-800"
                 />
@@ -182,7 +182,8 @@ const MemoryDetail = () => {
                 <button
                   onClick={() => {
                     if (!audioElement) {
-                      const audio = new Audio(`${BASE_URL}${memory.audioUrl}`);
+                      const audioUrl = memory.audioUrl?.startsWith('http') ? memory.audioUrl : `${BASE_URL}${memory.audioUrl}`;
+                      const audio = new Audio(audioUrl);
                       audio.addEventListener('ended', () => setIsPlayingAudio(false));
                       setAudioElement(audio);
                       audio.play();

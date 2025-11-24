@@ -17,7 +17,7 @@ import {
   getMemoryChain
 } from '../controllers/memoryController.js';
 import { authenticate } from '../middleware/auth.js';
-import upload from '../middleware/upload.js';
+import { uploadMultiple } from '../config/cloudinary.js';
 
 const router = express.Router();
 
@@ -39,10 +39,7 @@ const memoryValidation = [
 // Routes
 router.get('/', getAllMemories);
 router.get('/:id', getMemory);
-router.post('/', authenticate, upload.fields([
-  { name: 'media', maxCount: 1 },
-  { name: 'audio', maxCount: 1 }
-]), memoryValidation, createMemory);
+router.post('/', authenticate, uploadMultiple, memoryValidation, createMemory);
 router.put('/:id', authenticate, updateMemory);
 router.delete('/:id', authenticate, deleteMemory);
 

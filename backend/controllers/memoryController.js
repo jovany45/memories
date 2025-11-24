@@ -16,21 +16,18 @@ export const createMemory = async (req, res) => {
 
     const { title, description, type, tags, mood, isPublic } = req.body;
 
-    // Get media URL from uploaded file
+    // Get media URLs from Cloudinary uploads
     let mediaUrl = null;
     let audioUrl = null;
     
     if (req.files) {
-      // Multer avec plusieurs champs
+      // Upload avec Cloudinary - les URLs sont déjà permanentes
       if (req.files.media && req.files.media[0]) {
-        mediaUrl = `/uploads/${req.files.media[0].filename}`;
+        mediaUrl = req.files.media[0].path; // Cloudinary URL complète
       }
       if (req.files.audio && req.files.audio[0]) {
-        audioUrl = `/uploads/${req.files.audio[0].filename}`;
+        audioUrl = req.files.audio[0].path; // Cloudinary URL complète
       }
-    } else if (req.file) {
-      // Ancien système avec un seul fichier
-      mediaUrl = `/uploads/${req.file.filename}`;
     }
 
     const memory = new Memory({

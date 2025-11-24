@@ -47,13 +47,13 @@ const MemoryCard = ({ memory }) => {
           <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-dark-800">
             {memory.type === 'video' ? (
               <video
-                src={`${BASE_URL}${memory.mediaUrl}`}
+                src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                 className="w-full h-full object-cover"
                 preload="metadata"
               />
             ) : (
               <img
-                src={`${BASE_URL}${memory.mediaUrl}`}
+                src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                 alt={memory.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
@@ -186,7 +186,7 @@ const MemoryCard = ({ memory }) => {
                 <div className="relative">
                   {memory.type === 'video' ? (
                     <video
-                      src={`${BASE_URL}${memory.mediaUrl}`}
+                      src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                       className="w-full max-h-[70vh] object-contain"
                       controls
                       autoPlay
@@ -194,7 +194,7 @@ const MemoryCard = ({ memory }) => {
                     />
                   ) : memory.type === 'photo' ? (
                     <img
-                      src={`${BASE_URL}${memory.mediaUrl}`}
+                      src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                       alt={memory.title}
                       className="w-full max-h-[70vh] object-contain"
                     />
