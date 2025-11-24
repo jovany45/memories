@@ -178,35 +178,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
-        {/* Memories Section */}
-        <div>
-          <h2 className="text-2xl font-bold text-white mb-6">
-            📸 Souvenirs partagés
-          </h2>
-
-          {profile.memories && profile.memories.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {profile.memories.map((memory) => (
-                <MemoryCard key={memory._id} memory={memory} />
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20 card"
-            >
-              <span className="text-6xl mb-4 block">📭</span>
-              <h3 className="text-xl font-bold text-white mb-2">
-                Aucun souvenir pour le moment
-              </h3>
-              <p className="text-gray-400">
-                {isOwnProfile ? 'Commence à partager tes moments !' : 'Reviens plus tard !'}
-              </p>
-            </motion.div>
-          )}
-        </div>
       </motion.div>
     </div>
   );
