@@ -9,8 +9,8 @@ import {
   updateComplaintStatus,
   getComplaintStats
 } from '../controllers/complaintBoxController.js';
-import auth from '../middleware/auth.js';
-import isAdmin from '../middleware/isAdmin.js';
+import { authenticate } from '../middleware/auth.js';
+import { isAdmin } from '../middleware/isAdmin.js';
 
 const router = express.Router();
 
@@ -20,12 +20,12 @@ router.get('/', getAllComplaints);
 router.get('/:id', getComplaintById);
 
 // Routes nécessitant une authentification
-router.post('/:id/vote', auth, voteComplaint);
-router.post('/:id/comment', auth, addComment);
+router.post('/:id/vote', authenticate, voteComplaint);
+router.post('/:id/comment', authenticate, addComment);
 
 // Routes admin
-router.delete('/:id', auth, isAdmin, deleteComplaint);
-router.patch('/:id/status', auth, isAdmin, updateComplaintStatus);
-router.get('/admin/stats', auth, isAdmin, getComplaintStats);
+router.delete('/:id', authenticate, isAdmin, deleteComplaint);
+router.patch('/:id/status', authenticate, isAdmin, updateComplaintStatus);
+router.get('/admin/stats', authenticate, isAdmin, getComplaintStats);
 
 export default router;
