@@ -7,8 +7,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Le nom d\'utilisateur est requis'],
     unique: true,
     trim: true,
-    minlength: [3, 'Le nom doit contenir au moins 3 caractères'],
-    maxlength: [30, 'Le nom ne peut pas dépasser 30 caractères']
+    minlength: [3, 'Le nom doit contenir au moins 3 caractères']
   },
   email: {
     type: String,
@@ -29,7 +28,6 @@ const userSchema = new mongoose.Schema({
   },
   bio: {
     type: String,
-    maxlength: [500, 'La bio ne peut pas dépasser 500 caractères'],
     default: '✨ Futur pro de l\'informatique en formation !'
   },
   role: {

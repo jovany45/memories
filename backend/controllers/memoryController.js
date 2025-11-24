@@ -18,7 +18,18 @@ export const createMemory = async (req, res) => {
 
     // Get media URL from uploaded file
     let mediaUrl = null;
-    if (req.file) {
+    let audioUrl = null;
+    
+    if (req.files) {
+      // Multer avec plusieurs champs
+      if (req.files.media && req.files.media[0]) {
+        mediaUrl = `/uploads/${req.files.media[0].filename}`;
+      }
+      if (req.files.audio && req.files.audio[0]) {
+        audioUrl = `/uploads/${req.files.audio[0].filename}`;
+      }
+    } else if (req.file) {
+      // Ancien système avec un seul fichier
       mediaUrl = `/uploads/${req.file.filename}`;
     }
 
@@ -28,6 +39,7 @@ export const createMemory = async (req, res) => {
       author: req.userId,
       type,
       mediaUrl,
+      audioUrl,
       tags: tags ? (Array.isArray(tags) ? tags : tags.split(',').map(t => t.trim())) : [],
       mood: mood || 'wholesome',
       isPublic: isPublic !== undefined ? isPublic : true
@@ -75,7 +87,7 @@ export const createMemory = async (req, res) => {
 // @access  Public
 export const getAllMemories = async (req, res) => {
   try {
-    const { page = 1, limit = 12, type, mood, search, sortBy = 'createdAt' } = req.query;
+    const { type, mood, search, sortBy = 'createdAt' } = req.query;
 
     const query = { isPublic: true };
 
@@ -86,19 +98,16 @@ export const getAllMemories = async (req, res) => {
       query.$text = { $search: search };
     }
 
+    // Récupérer TOUS les souvenirs sans pagination
     const memories = await Memory.find(query)
       .populate('author', 'username avatar')
       .sort({ [sortBy]: -1 })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
       .exec();
 
     const count = await Memory.countDocuments(query);
 
     res.json({
       memories,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
       totalMemories: count
     });
   } catch (error) {

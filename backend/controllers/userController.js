@@ -11,7 +11,7 @@ export const getUserProfile = async (req, res) => {
       .populate({
         path: 'memories',
         match: { isPublic: true },
-        options: { sort: { createdAt: -1 }, limit: 10 }
+        options: { sort: { createdAt: -1 } } // Pas de limite, tous les souvenirs
       });
 
     if (!user) {
@@ -85,8 +85,7 @@ export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({ isActive: true })
       .select('-password')
-      .sort({ createdAt: -1 })
-      .limit(50);
+      .sort({ createdAt: -1 });
 
     res.json({
       count: users.length,

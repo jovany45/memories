@@ -7,12 +7,10 @@ import { checkAchievements, ACHIEVEMENTS } from '../utils/achievements.js';
 // @access  Public
 export const getLeaderboard = async (req, res) => {
   try {
-    const { limit = 10 } = req.query;
-    
+    // Pas de limite, afficher tous les utilisateurs
     const users = await User.find({ isActive: true })
       .select('username avatar karma achievements stats')
-      .sort({ karma: -1 })
-      .limit(parseInt(limit));
+      .sort({ karma: -1 });
     
     res.json({
       leaderboard: users.map((user, index) => ({

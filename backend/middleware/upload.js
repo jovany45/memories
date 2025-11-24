@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 
 // File filter
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi|webm/;
+  const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi|webm|mp3|wav|ogg|webm|m4a/;
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
 
@@ -36,11 +36,11 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Multer configuration
+// Multer configuration - AUCUNE LIMITE DE TAILLE
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 50 * 1024 * 1024 // 50MB max
+    fileSize: Infinity // Pas de limite de taille
   },
   fileFilter: fileFilter
 });

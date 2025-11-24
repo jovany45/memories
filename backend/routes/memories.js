@@ -39,7 +39,10 @@ const memoryValidation = [
 // Routes
 router.get('/', getAllMemories);
 router.get('/:id', getMemory);
-router.post('/', authenticate, upload.single('media'), memoryValidation, createMemory);
+router.post('/', authenticate, upload.fields([
+  { name: 'media', maxCount: 1 },
+  { name: 'audio', maxCount: 1 }
+]), memoryValidation, createMemory);
 router.put('/:id', authenticate, updateMemory);
 router.delete('/:id', authenticate, deleteMemory);
 

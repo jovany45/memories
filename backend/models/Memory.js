@@ -8,8 +8,7 @@ const commentSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: [true, 'Le commentaire ne peut pas être vide'],
-    maxlength: [1000, 'Le commentaire ne peut pas dépasser 1000 caractères']
+    required: [true, 'Le commentaire ne peut pas être vide']
   },
   gifUrl: {
     type: String,
@@ -58,13 +57,11 @@ const memorySchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, 'Le titre est requis'],
-    trim: true,
-    maxlength: [100, 'Le titre ne peut pas dépasser 100 caractères']
+    trim: true
   },
   description: {
     type: String,
-    required: [true, 'La description est requise'],
-    maxlength: [2000, 'La description ne peut pas dépasser 2000 caractères']
+    required: [true, 'La description est requise']
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -80,6 +77,10 @@ const memorySchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  audioUrl: {
+    type: String,
+    default: null
+  },
   thumbnail: {
     type: String,
     default: null
@@ -91,7 +92,7 @@ const memorySchema = new mongoose.Schema({
   }],
   mood: {
     type: String,
-    enum: ['funny', 'emotional', 'epic', 'geek', 'sarcastic', 'wholesome', 'cringe'],
+    enum: ['funny', 'emotional', 'epic', 'geek', 'sarcastic', 'wholesome', 'cringe', 'excited', 'nostalgic', 'proud', 'mysterious', 'romantic', 'zen', 'chaotic'],
     default: 'wholesome'
   },
   likes: [{
