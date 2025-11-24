@@ -90,10 +90,10 @@ const MemoryCard = ({ memory }) => {
     }
 
     if (isEntering) {
-      // Attendre 4 secondes avant d'afficher l'overlay
+      // Attendre 2.5 secondes avant d'afficher l'overlay
       previewTimeoutRef.current = setTimeout(() => {
         setShowPreview(true);
-      }, 4000);
+      }, 2500);
     } else {
       setShowPreview(false);
     }
