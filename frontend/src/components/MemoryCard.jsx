@@ -11,6 +11,7 @@ const MemoryCard = ({ memory }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoThumbnail, setVideoThumbnail] = useState(null);
   const videoRef = useRef(null);
+  const hoverTimeoutRef = useRef(null);
 
   // Générer une miniature de la vidéo
   useEffect(() => {
@@ -35,10 +36,29 @@ const MemoryCard = ({ memory }) => {
     }
   }, [memory.type]);
 
+  // Nettoyer le timeout au démontage du composant
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleVideoInteraction = (e, shouldPlay) => {
     const video = e.currentTarget;
+    
+    // Annuler tout timeout en cours
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    
     if (shouldPlay && !isPlaying) {
-      video.play().then(() => setIsPlaying(true)).catch(() => {});
+      // Attendre 5 secondes avant de lancer la vidéo
+      hoverTimeoutRef.current = setTimeout(() => {
+        video.play().then(() => setIsPlaying(true)).catch(() => {});
+      }, 5000);
     } else if (!shouldPlay && isPlaying) {
       video.pause();
       video.currentTime = 0;
