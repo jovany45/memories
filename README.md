@@ -1,14 +1,32 @@
-# 💾 Memories - Site de Souvenirs Geek
+# 💾 2ISALife - Plateforme collaborative pour le centre 2ISA
 
-Un site moderne et émotionnel pour partager les souvenirs du centre de formation informatique.
+Un site moderne pour partager souvenirs, idées et anecdotes du centre de formation 2ISA.
+
+---
+
+## 🚨 **ACTION IMMÉDIATE REQUISE**
+
+### Configuration Cloudinary (obligatoire pour que les uploads fonctionnent)
+
+**Temps : 13 minutes**
+
+1. Crée un compte sur [cloudinary.com](https://cloudinary.com)
+2. Note tes 3 identifiants (Cloud Name, API Key, API Secret)
+3. Ajoute-les dans Render Dashboard → Environment
+4. Redéploiement automatique
+
+**📖 Guide détaillé** : Lis `URGENT_CLOUDINARY.md` ou `ACTION_REQUISE_CLOUDINARY.md`
+
+---
 
 ## 🚀 Technologies
 
 ### Backend
 - **Node.js** avec Express
-- **MongoDB** avec Mongoose
+- **MongoDB Atlas** (base de données cloud)
+- **Cloudinary** (stockage permanent fichiers)
 - **JWT** pour l'authentification
-- **Multer** pour l'upload de fichiers
+- **Multer + multer-storage-cloudinary** pour uploads
 - **Bcrypt** pour le hashage des mots de passe
 
 ### Frontend
@@ -19,11 +37,54 @@ Un site moderne et émotionnel pour partager les souvenirs du centre de formatio
 - **Axios** pour les appels API
 - **React Hot Toast** pour les notifications
 
+---
+
+## ✨ Fonctionnalités
+
+### 📸 Système de Memories
+- Upload photos/vidéos/vocaux
+- 14 humeurs différentes (😂🥺🔥🤓😏🥰😬🤩🌅💪🌙💕🧘🌪️)
+- Likes et commentaires
+- Timeline chronologique
+- Filtres par humeur
+
+### 🎤 Enregistrement Vocal
+- Enregistrement direct depuis le navigateur
+- Visualisation audio en temps réel (50 barres)
+- Play/pause/suppression
+- Stockage permanent sur Cloudinary
+
+### 💡 Boîte à Idées
+- Proposer des améliorations pour le centre
+- Système de votes (👍👎)
+- Commentaires sur les idées
+- Suivi du statut (en attente, approuvée, rejetée)
+
+### 🎲 Générateur d'Idées
+- 90 idées pré-programmées (normales, WTF, geek)
+- Mode aléatoire ou multiple
+- Statistiques d'utilisation
+
+### 📢 Système de Plaintes Anonymes
+- Poster anonymement des plaintes
+- 6 catégories (vie quotidienne, nourriture, infrastructure...)
+- Votes et commentaires
+- Modération admin
+
+### 🏆 Gamification
+- Défis quotidiens
+- Système de duels
+- Achievements/badges
+- Leaderboard
+
+---
+
 ## 📦 Installation
 
 ### Prérequis
 - Node.js (v18+)
-- MongoDB (local ou Atlas)
+- Compte MongoDB Atlas
+- Compte Cloudinary
 
 ### Backend
 
@@ -35,8 +96,11 @@ npm install
 Créer un fichier `.env` :
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/memories
-JWT_SECRET=votre_super_secret_key_ultra_securise
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/2isalife
+JWT_SECRET=genere_avec_generateSecret.js
+CLOUDINARY_CLOUD_NAME=ton-cloud-name
+CLOUDINARY_API_KEY=ta-api-key
+CLOUDINARY_API_SECRET=ton-api-secret
 NODE_ENV=development
 ```
 
