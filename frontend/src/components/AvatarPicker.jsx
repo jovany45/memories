@@ -29,8 +29,10 @@ const AvatarPicker = ({ currentAvatar, userId, onAvatarUpdate }) => {
       setPreviewAvatar(data.avatar);
       onAvatarUpdate(data.avatar);
       setShowModal(false);
+      console.log('✅ Avatar généré avec succès:', data.avatar);
     } catch (error) {
-      console.error('Erreur lors de la génération:', error);
+      console.error('❌ Erreur lors de la génération:', error);
+      alert('Erreur lors de la génération de l\'avatar. Veuillez réessayer.');
     } finally {
       setIsGenerating(false);
     }
@@ -51,8 +53,10 @@ const AvatarPicker = ({ currentAvatar, userId, onAvatarUpdate }) => {
       await userAPI.updateProfile(userId, { avatar: previewAvatar });
       onAvatarUpdate(previewAvatar);
       setShowModal(false);
+      console.log('✅ Avatar mis à jour avec succès');
     } catch (error) {
-      console.error('Erreur lors de la mise à jour:', error);
+      console.error('❌ Erreur lors de la mise à jour:', error);
+      alert('Erreur lors de la mise à jour de l\'avatar. Veuillez réessayer.');
     } finally {
       setIsGenerating(false);
     }
@@ -70,11 +74,11 @@ const AvatarPicker = ({ currentAvatar, userId, onAvatarUpdate }) => {
         />
         <motion.button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-shadow"
-          whileHover={{ scale: 1.05 }}
+          className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-xl transition-all font-semibold text-lg"
+          whileHover={{ scale: 1.05, boxShadow: "0 20px 25px -5px rgba(168, 85, 247, 0.4)" }}
           whileTap={{ scale: 0.95 }}
         >
-          ✨ Changer d'avatar
+          🎨 Modifier l'avatar
         </motion.button>
       </div>
 
@@ -91,9 +95,12 @@ const AvatarPicker = ({ currentAvatar, userId, onAvatarUpdate }) => {
             animate={{ scale: 1, opacity: 1 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
               Personnaliser ton avatar
             </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              {avatarStyles.length} styles d'avatars disponibles ! Génère aléatoirement ou choisis ton style préféré.
+            </p>
 
             {/* Aperçu */}
             <div className="flex flex-col items-center gap-4 mb-6">

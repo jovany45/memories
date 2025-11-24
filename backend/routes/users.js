@@ -4,13 +4,13 @@ import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Routes
+// Avatar routes (DOIT être avant les routes avec :id)
+router.get('/avatar/styles', getAvatarStyles);
+router.post('/:id/avatar/random', authenticate, generateNewAvatar);
+
+// User routes
 router.get('/', getAllUsers);
 router.get('/:id', getUserProfile);
 router.put('/:id', authenticate, updateUserProfile);
-
-// Avatar routes
-router.get('/avatar/styles', getAvatarStyles);
-router.post('/:id/avatar/random', authenticate, generateNewAvatar);
 
 export default router;
