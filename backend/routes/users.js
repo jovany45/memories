@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserProfile, updateUserProfile, getAllUsers } from '../controllers/userController.js';
+import { getUserProfile, updateUserProfile, getAllUsers, generateNewAvatar, getAvatarStyles } from '../controllers/userController.js';
 import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -8,5 +8,9 @@ const router = express.Router();
 router.get('/', getAllUsers);
 router.get('/:id', getUserProfile);
 router.put('/:id', authenticate, updateUserProfile);
+
+// Avatar routes
+router.get('/avatar/styles', getAvatarStyles);
+router.post('/:id/avatar/random', authenticate, generateNewAvatar);
 
 export default router;

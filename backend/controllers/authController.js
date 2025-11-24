@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import User from '../models/User.js';
+import { generateRandomAvatar } from '../utils/avatarGenerator.js';
 
 // Generate JWT token
 const generateToken = (userId) => {
@@ -32,13 +33,13 @@ export const register = async (req, res) => {
       });
     }
 
-    // Create user
+    // Create user with random avatar
     const user = new User({
       username,
       email,
       password,
       bio: bio || `✨ Futur pro de l'informatique en formation !`,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
+      avatar: generateRandomAvatar()
     });
 
     await user.save();

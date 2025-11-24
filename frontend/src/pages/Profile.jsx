@@ -5,6 +5,7 @@ import { Calendar, Heart, MessageCircle } from 'lucide-react';
 import { userAPI } from '../api';
 import { useAuth } from '../context/AuthContext';
 import MemoryCard from '../components/MemoryCard';
+import AvatarPicker from '../components/AvatarPicker';
 import toast from 'react-hot-toast';
 
 const Profile = () => {
@@ -79,12 +80,20 @@ const Profile = () => {
         {/* Profile Header */}
         <div className="card mb-8">
           <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
-            <motion.img
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              src={profile.avatar}
-              alt={profile.username}
-              className="w-32 h-32 rounded-full border-4 border-primary-500"
-            />
+            {isOwnProfile ? (
+              <AvatarPicker
+                currentAvatar={profile.avatar}
+                userId={profile._id}
+                onAvatarUpdate={(newAvatar) => setProfile({ ...profile, avatar: newAvatar })}
+              />
+            ) : (
+              <motion.img
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                src={profile.avatar}
+                alt={profile.username}
+                className="w-32 h-32 rounded-full border-4 border-primary-500"
+              />
+            )}
 
             <div className="flex-1 text-center md:text-left">
               {isEditing ? (

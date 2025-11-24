@@ -34,6 +34,16 @@ export const userAPI = {
   updateProfile: async (userId, userData) => {
     const response = await api.put(`/users/${userId}`, userData);
     return response.data;
+  },
+  
+  generateRandomAvatar: async (userId) => {
+    const response = await api.post(`/users/${userId}/avatar/random`);
+    return response.data;
+  },
+  
+  getAvatarStyles: async () => {
+    const response = await api.get('/users/avatar/styles');
+    return response.data;
   }
 };
 

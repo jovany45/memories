@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import Memory from '../models/Memory.js';
+import { generateRandomAvatar, generateAvatar, avatarStyles } from '../utils/avatarGenerator.js';
 
 // @desc    Get user profile
 // @route   GET /api/users/:id
@@ -100,4 +101,44 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export default { getUserProfile, updateUserProfile, getAllUsers };
+// Générer un nouvel avatar aléatoire pour l'utilisateur
+export const generateNewAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+    
+    // Vérifier que l'utilisateur modifie son propre profil
+    if (req.user.id !== user._id.toString()) {
+      return res.status(403).json({ message: 'Non autorisé' });
+    }
+    
+    user.avatar = generateRandomAvatar();
+    await user.save();
+    
+    res.json({ avatar: user.avatar });
+  } catch (error) {
+    console.error('Generate avatar error:', error);
+    res.status(500).json({ 
+      message: 'Erreur lors de la génération de l\'avatar', 
+      error: error.message 
+    });
+  }
+};
+
+// Récupérer tous les styles d'avatars disponibles
+export const getAvatarStyles = async (req, res) => {
+  try {
+    res.json({ styles: avatarStyles });
+  } catch (error) {
+    console.error('Get avatar styles error:', error);
+    res.status(500).json({ 
+      message: 'Erreur lors de la récupération des styles', 
+      error: error.message 
+    });
+  }
+};
+
+export default { getUserProfile, updateUserProfile, getAllUsers, generateNewAvatar, getAvatarStyles };
