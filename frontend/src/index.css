@@ -146,3 +146,98 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary-500;
 }
+
+/* Theme-specific styles */
+body.cyberpunk {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
+}
+
+body.cyberpunk .card {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+  border: 1px solid rgba(255, 0, 255, 0.5);
+}
+
+body.cyberpunk .btn-primary {
+  background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+body.zen {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+}
+
+body.zen .card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+body.zen .text-white {
+  color: #1e293b !important;
+}
+
+body.zen .text-gray-400 {
+  color: #64748b !important;
+}
+
+body.retro {
+  background: linear-gradient(135deg, #2d1b69 0%, #1a0b3d 100%);
+  font-family: 'Press Start 2P', monospace;
+}
+
+body.retro .card {
+  border: 4px solid #ffd93d;
+  box-shadow: 8px 8px 0 rgba(255, 107, 107, 0.3);
+  border-radius: 0;
+}
+
+body.retro .btn-primary {
+  border-radius: 0;
+  border: 4px solid #ffd93d;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+}
+
+body.pride .card {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(196, 69, 105, 0.1) 100%);
+  border: 2px solid;
+  border-image: linear-gradient(135deg, #ff6b9d, #c44569, #ffa502) 1;
+}
+
+body.pride .btn-primary {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ffa502 100%);
+  animation: rainbow-shift 3s ease infinite;
+}
+
+body.hacker {
+  background: #000000;
+  font-family: 'Courier New', monospace;
+}
+
+body.hacker .card {
+  background: rgba(0, 255, 0, 0.05);
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+body.hacker .btn-primary {
+  background: transparent;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+body.hacker .btn-primary:hover {
+  background: rgba(0, 255, 0, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+}
+
+@keyframes rainbow-shift {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(360deg); }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

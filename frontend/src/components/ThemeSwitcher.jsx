@@ -2,9 +2,22 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Palette, Check } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import toast from 'react-hot-toast';
 
 const ThemeSwitcher = ({ isOpen, onClose }) => {
   const { currentTheme, changeTheme, allThemes } = useTheme();
+
+  const handleThemeChange = (key) => {
+    changeTheme(key);
+    const themeName = allThemes[key].name;
+    toast.success(`🎨 Thème "${themeName}" activé !`, {
+      style: {
+        background: allThemes[key].card,
+        color: allThemes[key].text,
+        border: `1px solid ${allThemes[key].primary}`,
+      },
+    });
+  };
 
   if (!isOpen) return null;
 
@@ -40,9 +53,9 @@ const ThemeSwitcher = ({ isOpen, onClose }) => {
                 key={key}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => changeTheme(key)}
-                className={`relative cursor-pointer rounded-xl overflow-hidden ${
-                  isActive ? 'ring-4 ring-primary-500' : ''
+                onClick={() => handleThemeChange(key)}
+                className={`relative cursor-pointer rounded-xl overflow-hidden transition-all ${
+                  isActive ? 'ring-4 ring-primary-500 shadow-2xl' : 'hover:ring-2 hover:ring-gray-600'
                 }`}
               >
                 {/* Active Badge */}

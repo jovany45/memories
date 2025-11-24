@@ -120,20 +120,30 @@ export const ThemeProvider = ({ children }) => {
     
     const root = document.documentElement;
     
+    // Apply CSS variables
     root.style.setProperty('--color-primary', theme.primary);
     root.style.setProperty('--color-secondary', theme.secondary);
+    root.style.setProperty('--color-accent', theme.accent);
     root.style.setProperty('--color-background', theme.background);
     root.style.setProperty('--color-card', theme.card);
     root.style.setProperty('--color-text', theme.text);
     
-    // Apply special effects
-    document.body.className = themeName;
+    // Apply theme class to body
+    document.body.className = '';
+    document.body.classList.add(themeName);
     
+    // Apply light mode if needed
     if (theme.isLight) {
       document.body.classList.add('light-mode');
+      document.body.style.backgroundColor = theme.background;
+      document.body.style.color = theme.text;
     } else {
       document.body.classList.remove('light-mode');
+      document.body.style.backgroundColor = theme.background;
+      document.body.style.color = theme.text;
     }
+    
+    console.log(`✅ Thème "${theme.name}" appliqué !`);
   };
 
   const changeTheme = (themeName) => {
