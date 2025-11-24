@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Home, Plus, User, LogOut, Menu, X, Trophy, Clock, Sword, Palette, Shield } from 'lucide-react';
+import { Home, Plus, User, LogOut, Menu, X, Trophy, Clock, Sword, Palette, Shield, Lightbulb, MessageSquare, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -17,7 +17,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
             <span className="text-3xl group-hover:animate-bounce">💾</span>
-            <span className="text-xl font-bold gradient-text">Memories</span>
+            <span className="text-xl font-bold gradient-text">2ISALife</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -40,6 +40,21 @@ const Navbar = () => {
             <Link to="/duels" className="flex items-center space-x-2 hover:text-primary-400 transition-colors">
               <Sword size={20} />
               <span>Duels</span>
+            </Link>
+
+            <Link to="/idea-generator" className="flex items-center space-x-2 hover:text-primary-400 transition-colors">
+              <Lightbulb size={20} />
+              <span>Idées</span>
+            </Link>
+
+            <Link to="/idea-box" className="flex items-center space-x-2 hover:text-primary-400 transition-colors">
+              <MessageSquare size={20} />
+              <span>Boîte à Idées</span>
+            </Link>
+
+            <Link to="/complaints" className="flex items-center space-x-2 hover:text-primary-400 transition-colors">
+              <AlertCircle size={20} />
+              <span>Plaintes</span>
             </Link>
 
             <button
@@ -150,6 +165,30 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 ⚔️ Duels
+              </Link>
+
+              <Link 
+                to="/idea-generator" 
+                className="block py-2 hover:text-primary-400 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                💡 Générateur d'Idées
+              </Link>
+
+              <Link 
+                to="/idea-box" 
+                className="block py-2 hover:text-primary-400 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                💬 Boîte à Idées
+              </Link>
+
+              <Link 
+                to="/complaints" 
+                className="block py-2 hover:text-primary-400 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                📢 Plaintes
               </Link>
 
               <button

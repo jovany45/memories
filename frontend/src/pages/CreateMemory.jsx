@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Upload, Image, Video, FileText, Sparkles } from 'lucide-react';
+import { Upload, Image, Video, FileText, Sparkles, Mic } from 'lucide-react';
 import { memoryAPI } from '../api';
 import toast from 'react-hot-toast';
+import VoiceRecorder from '../components/VoiceRecorder';
 
 const CreateMemory = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const CreateMemory = () => {
     isPublic: true
   });
   const [mediaFile, setMediaFile] = useState(null);
+  const [audioFile, setAudioFile] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +40,10 @@ const CreateMemory = () => {
     }
   };
 
+  const handleAudioRecorded = (file) => {
+    setAudioFile(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -53,6 +59,10 @@ const CreateMemory = () => {
       
       if (mediaFile) {
         data.append('media', mediaFile);
+      }
+      
+      if (audioFile) {
+        data.append('audio', audioFile);
       }
 
       await memoryAPI.createMemory(data);
@@ -143,6 +153,13 @@ const CreateMemory = () => {
                   <option value="sarcastic">😏 Sarcastique</option>
                   <option value="wholesome">🥰 Wholesome</option>
                   <option value="cringe">😬 Cringe</option>
+                  <option value="excited">🤩 Excité</option>
+                  <option value="nostalgic">🌅 Nostalgique</option>
+                  <option value="proud">💪 Fier</option>
+                  <option value="mysterious">🌙 Mystérieux</option>
+                  <option value="romantic">💕 Romantique</option>
+                  <option value="zen">🧘 Zen</option>
+                  <option value="chaotic">🌪️ Chaotique</option>
                 </select>
               </div>
             </div>
@@ -219,6 +236,20 @@ const CreateMemory = () => {
                   )}
                 </label>
               </div>
+            </div>
+
+            {/* Voice Recorder */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-3">
+                🎤 Anecdote vocale (optionnel)
+              </label>
+              <VoiceRecorder onRecordingComplete={handleAudioRecorded} />
+              {audioFile && (
+                <p className="mt-2 text-sm text-green-400 flex items-center gap-2">
+                  <Mic className="w-4 h-4" />
+                  Vocal enregistré et prêt à être publié !
+                </p>
+              )}
             </div>
 
             {/* Public/Private */}

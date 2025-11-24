@@ -12,6 +12,10 @@ import Timeline from './pages/Timeline';
 import Duels from './pages/Duels';
 import Achievements from './pages/Achievements';
 import AdminDashboard from './pages/AdminDashboard';
+import IdeaGeneratorPage from './pages/IdeaGeneratorPage';
+import IdeaBoxPage from './pages/IdeaBoxPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import ComplaintBoxPage from './pages/ComplaintBoxPage';
 import NotFound from './pages/NotFound';
 
 // Protected Route Component
@@ -38,9 +42,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/memories/:id" element={<MemoryDetail />} />
+        <Route path="/memory/:id" element={<MemoryDetail />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/timeline" element={<Timeline />} />
         <Route path="/duels" element={<Duels />} />
+        <Route path="/idea-generator" element={<IdeaGeneratorPage />} />
+        <Route path="/idea-box" element={<IdeaBoxPage />} />
+        <Route path="/complaints" element={<ComplaintBoxPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route 
           path="/profile/:id" 
           element={

@@ -117,6 +117,12 @@ const Login = () => {
               </Link>
             </p>
           </div>
+
+          <div className="mt-4 text-center">
+            <Link to="/privacy" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+              🔒 Politique de confidentialité
+            </Link>
+          </div>
         </div>
       </motion.div>
     </div>

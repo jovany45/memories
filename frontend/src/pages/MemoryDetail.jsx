@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Heart, MessageCircle, Eye, Calendar, Trash2, Send } from 'lucide-react';
+import { Heart, MessageCircle, Eye, Calendar, Trash2, Send, Volume2, Play, Pause } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { memoryAPI } from '../api';
@@ -17,6 +17,8 @@ const MemoryDetail = () => {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [audioElement, setAudioElement] = useState(null);
 
   useEffect(() => {
     fetchMemory();
@@ -96,7 +98,14 @@ const MemoryDetail = () => {
     geek: '🤓',
     sarcastic: '😏',
     wholesome: '🥰',
-    cringe: '😬'
+    cringe: '😬',
+    excited: '🤩',
+    nostalgic: '🌅',
+    proud: '💪',
+    mysterious: '🌙',
+    romantic: '💕',
+    zen: '🧘',
+    chaotic: '🌪️'
   };
 
   return (
@@ -151,6 +160,77 @@ const MemoryDetail = () => {
                 />
               )}
             </div>
+          )}
+
+          {/* Audio Player */}
+          {memory.audioUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/50 rounded-2xl p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-full">
+                  <Volume2 className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-white font-semibold mb-1">Anecdote vocale</h3>
+                  <p className="text-sm text-gray-400">
+                    {memory.author.username} a enregistré une note vocale
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    if (!audioElement) {
+                      const audio = new Audio(`${BASE_URL}${memory.audioUrl}`);
+                      audio.addEventListener('ended', () => setIsPlayingAudio(false));
+                      setAudioElement(audio);
+                      audio.play();
+                      setIsPlayingAudio(true);
+                    } else {
+                      if (isPlayingAudio) {
+                        audioElement.pause();
+                        setIsPlayingAudio(false);
+                      } else {
+                        audioElement.play();
+                        setIsPlayingAudio(true);
+                      }
+                    }
+                  }}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-4 rounded-full transition-all shadow-lg shadow-purple-500/50"
+                >
+                  {isPlayingAudio ? (
+                    <Pause className="w-6 h-6" />
+                  ) : (
+                    <Play className="w-6 h-6 ml-0.5" />
+                  )}
+                </button>
+              </div>
+              
+              {/* Visualisation audio animée */}
+              {isPlayingAudio && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="flex items-center gap-1 h-12 mt-4"
+                >
+                  {[...Array(50)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      animate={{
+                        height: ['20%', '100%', '20%'],
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        repeat: Infinity,
+                        delay: i * 0.02,
+                      }}
+                      className="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-full"
+                    />
+                  ))}
+                </motion.div>
+              )}
+            </motion.div>
           )}
 
           {/* Description */}
