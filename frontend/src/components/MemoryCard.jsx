@@ -8,6 +8,30 @@ import { useState } from 'react';
 
 const MemoryCard = ({ memory }) => {
   const [showPreview, setShowPreview] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleVideoInteraction = (e, shouldPlay) => {
+    const video = e.currentTarget;
+    if (shouldPlay && !isPlaying) {
+      video.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else if (!shouldPlay && isPlaying) {
+      video.pause();
+      video.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  const handleTouchVideo = (e) => {
+    e.preventDefault();
+    const video = e.currentTarget;
+    if (isPlaying) {
+      video.pause();
+      video.currentTime = 0;
+      setIsPlaying(false);
+    } else {
+      video.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  };
 
   const moodEmojis = {
     funny: '😂',
@@ -53,19 +77,21 @@ const MemoryCard = ({ memory }) => {
                   preload="metadata"
                   muted
                   loop
-                  onMouseEnter={(e) => e.currentTarget.play()}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.pause();
-                    e.currentTarget.currentTime = 0;
-                  }}
+                  playsInline
+                  onMouseEnter={(e) => handleVideoInteraction(e, true)}
+                  onMouseLeave={(e) => handleVideoInteraction(e, false)}
+                  onClick={handleTouchVideo}
+                  onTouchStart={handleTouchVideo}
                 />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="bg-black/50 rounded-full p-4">
-                    <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+                {!isPlaying && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/50 rounded-full p-4">
+                      <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               <img
