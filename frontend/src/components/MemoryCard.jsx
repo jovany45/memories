@@ -46,11 +46,27 @@ const MemoryCard = ({ memory }) => {
         {memory.mediaUrl && (
           <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-dark-800">
             {memory.type === 'video' ? (
-              <video
-                src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
-                className="w-full h-full object-cover"
-                preload="metadata"
-              />
+              <div className="relative w-full h-full">
+                <video
+                  src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
+                  className="w-full h-full object-cover"
+                  preload="metadata"
+                  muted
+                  loop
+                  onMouseEnter={(e) => e.currentTarget.play()}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.pause();
+                    e.currentTarget.currentTime = 0;
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="bg-black/50 rounded-full p-4">
+                    <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
             ) : (
               <img
                 src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
