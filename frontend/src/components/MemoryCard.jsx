@@ -4,11 +4,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { BASE_URL } from '../api/axios';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const MemoryCard = ({ memory }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [videoThumbnail, setVideoThumbnail] = useState(null);
+  const videoRef = useRef(null);
+
+  // Générer une miniature de la vidéo
+  useEffect(() => {
+    if (memory.type === 'video' && videoRef.current) {
+      const video = videoRef.current;
+      
+      const generateThumbnail = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const thumbnail = canvas.toDataURL('image/jpeg', 0.7);
+        setVideoThumbnail(thumbnail);
+      };
+
+      video.addEventListener('loadeddata', generateThumbnail);
+      
+      return () => {
+        video.removeEventListener('loadeddata', generateThumbnail);
+      };
+    }
+  }, [memory.type]);
 
   const handleVideoInteraction = (e, shouldPlay) => {
     const video = e.currentTarget;
@@ -70,8 +95,18 @@ const MemoryCard = ({ memory }) => {
         {memory.mediaUrl && (
           <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-dark-800">
             {memory.type === 'video' ? (
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full bg-gradient-to-br from-purple-900 to-pink-900">
+                {/* Miniature de la vidéo en arrière-plan */}
+                {videoThumbnail && (
+                  <img 
+                    src={videoThumbnail} 
+                    alt="Video preview"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ display: isPlaying ? 'none' : 'block' }}
+                  />
+                )}
                 <video
+                  ref={videoRef}
                   src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
                   className="w-full h-full object-cover"
                   preload="metadata"
@@ -83,15 +118,14 @@ const MemoryCard = ({ memory }) => {
                   onClick={handleTouchVideo}
                   onTouchStart={handleTouchVideo}
                 />
-                {!isPlaying && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="bg-black/50 rounded-full p-4">
-                      <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
+                {/* Overlay avec icône play toujours visible quand la vidéo ne joue pas */}
+                <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
+                  <div className="bg-black/60 rounded-full p-6 backdrop-blur-sm shadow-2xl">
+                    <svg className="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
                   </div>
-                )}
+                </div>
               </div>
             ) : (
               <img
