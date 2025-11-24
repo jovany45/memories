@@ -217,7 +217,7 @@ const ComplaintBox = () => {
                 onChange={(e) => setNewComplaint({ ...newComplaint, content: e.target.value })}
                 placeholder="Exprime ton mécontentement sur la vie au centre 2ISA (nourriture, locaux, organisation, services...)... personne ne saura que c'est toi ! 😈"
                 rows={4}
-                className="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 !text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 !text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
               />
             </div>
 
@@ -383,7 +383,7 @@ const ComplaintBox = () => {
                                 value={commentInputs[complaint._id] || ''}
                                 onChange={(e) => setCommentInputs({ ...commentInputs, [complaint._id]: e.target.value })}
                                 placeholder="Ajoute ton commentaire..."
-                                className="flex-1 bg-dark/50 border border-gray-700 rounded-lg px-4 py-2 text-sm !text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm !text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
                                 onKeyPress={(e) => {
                                   if (e.key === 'Enter') {
                                     handleAddComment(complaint._id);

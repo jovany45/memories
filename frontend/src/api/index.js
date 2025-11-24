@@ -238,7 +238,7 @@ export const complaintAPI = {
   },
 
   addComment: async (complaintId, content) => {
-    const response = await api.post(`/complaints/${complaintId}/comments`, { content });
+    const response = await api.post(`/complaints/${complaintId}/comment`, { content });
     return response.data;
   },
 
