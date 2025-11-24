@@ -142,25 +142,26 @@ const MemoryCard = ({ memory }) => {
                   <img 
                     src={videoThumbnail} 
                     alt="Video preview"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover z-10"
                     style={{ display: isPlaying ? 'none' : 'block' }}
                   />
                 )}
                 <video
                   ref={videoRef}
                   src={memory.mediaUrl?.startsWith('http') ? memory.mediaUrl : `${BASE_URL}${memory.mediaUrl}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover relative z-0"
                   preload="metadata"
                   muted
                   loop
                   playsInline
+                  style={{ visibility: isPlaying ? 'visible' : 'hidden' }}
                   onMouseEnter={(e) => handleVideoInteraction(e, true)}
                   onMouseLeave={(e) => handleVideoInteraction(e, false)}
                   onClick={handleTouchVideo}
                   onTouchStart={handleTouchVideo}
                 />
                 {/* Overlay avec icône play toujours visible quand la vidéo ne joue pas */}
-                <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
+                <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 z-20 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
                   <div className="bg-black/60 rounded-full p-6 backdrop-blur-sm shadow-2xl">
                     <svg className="w-16 h-16 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z"/>
