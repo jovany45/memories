@@ -55,6 +55,7 @@ export const getAllIdeas = async (req, res) => {
 
     let ideas = await IdeaBox.find(query)
       .populate('author', 'username avatar')
+      .populate('comments.author', 'username avatar')
       .sort(sortOption)
       .lean();
 
@@ -168,6 +169,42 @@ export const voteIdea = async (req, res) => {
     console.error('Vote idea error:', error);
     res.status(500).json({ 
       message: '🎯 Erreur de vote (la démocratie est dure)', 
+      error: error.message 
+    });
+  }
+};
+
+// @desc    Add comment to idea
+// @route   POST /api/idea-box/:id/comment
+// @access  Private
+export const addComment = async (req, res) => {
+  try {
+    const { content } = req.body;
+    const idea = await IdeaBox.findById(req.params.id);
+
+    if (!idea) {
+      return res.status(404).json({ message: 'Idée introuvable' });
+    }
+
+    idea.comments.push({
+      author: req.user._id,
+      content,
+      createdAt: new Date()
+    });
+
+    await idea.save();
+    await idea.populate('author', 'username avatar');
+    await idea.populate('comments.author', 'username avatar');
+
+    res.json({
+      success: true,
+      message: '💬 Commentaire ajouté !',
+      idea
+    });
+  } catch (error) {
+    console.error('Add comment error:', error);
+    res.status(500).json({ 
+      message: 'Erreur lors de l\'ajout du commentaire', 
       error: error.message 
     });
   }

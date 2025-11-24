@@ -18,6 +18,9 @@ const IdeaBox = () => {
   const [sortBy, setSortBy] = useState('recent');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [selectedIdea, setSelectedIdea] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [commentText, setCommentText] = useState('');
   const [newIdea, setNewIdea] = useState({
     title: '',
     description: '',
@@ -166,6 +169,48 @@ const IdeaBox = () => {
     } catch (error) {
       toast.error('💣 Échec de la suppression');
       console.error('Error deleting idea:', error);
+    }
+  };
+
+  const handleOpenDetail = (idea) => {
+    setSelectedIdea(idea);
+    setShowDetailModal(true);
+  };
+
+  const handleAddComment = async (ideaId) => {
+    if (!isAuthenticated) {
+      toast.error('🚫 Connecte-toi pour commenter !');
+      return;
+    }
+
+    if (!commentText.trim()) {
+      toast.error('Le commentaire ne peut pas être vide !');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/idea-box/${ideaId}/comment`,
+        { content: commentText },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+
+      // Mettre à jour l'idée dans la liste
+      setIdeas(ideas.map(idea => 
+        idea._id === ideaId ? response.data.idea : idea
+      ));
+
+      // Mettre à jour l'idée sélectionnée dans le modal
+      setSelectedIdea(response.data.idea);
+      setCommentText('');
+      toast.success('💬 Commentaire ajouté !');
+    } catch (error) {
+      toast.error('❌ Erreur lors de l\'ajout du commentaire');
+      console.error('Error adding comment:', error);
     }
   };
 
@@ -339,7 +384,8 @@ const IdeaBox = () => {
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: index * 0.05 }}
                     whileHover={{ y: -5 }}
-                    className="card group relative overflow-hidden"
+                    className="card group relative overflow-hidden cursor-pointer"
+                    onClick={() => handleOpenDetail(idea)}
                   >
                     {/* Category badge */}
                     <div className="absolute top-4 right-4">
@@ -392,7 +438,10 @@ const IdeaBox = () => {
                       <div className="flex items-center space-x-3">
                         <motion.button
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => handleVote(idea._id, 'up')}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleVote(idea._id, 'up');
+                          }}
                           disabled={!isAuthenticated}
                           className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all ${
                             userVote === 'up'
@@ -406,7 +455,10 @@ const IdeaBox = () => {
 
                         <motion.button
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => handleVote(idea._id, 'down')}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleVote(idea._id, 'down');
+                          }}
                           disabled={!isAuthenticated}
                           className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all ${
                             userVote === 'down'
@@ -432,7 +484,10 @@ const IdeaBox = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => handleDelete(idea._id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(idea._id);
+                          }}
                           className="p-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-all"
                         >
                           <Trash2 size={16} />
@@ -557,6 +612,196 @@ const IdeaBox = () => {
                 <p className="mt-4 text-xs text-gray-500 italic text-center">
                   ⚠️ Attention : 0,001% de chances que ce soit implémenté
                 </p>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Modal détail avec commentaires */}
+        <AnimatePresence>
+          {showDetailModal && selectedIdea && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+              onClick={() => setShowDetailModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-dark-800 rounded-2xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+              >
+                {/* Close button */}
+                <button
+                  onClick={() => setShowDetailModal(false)}
+                  className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <X size={24} className="text-gray-400" />
+                </button>
+
+                {/* Header */}
+                <div className="mb-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <h2 className="text-3xl font-bold text-white pr-12">
+                      {selectedIdea.title}
+                    </h2>
+                  </div>
+
+                  <div className="flex items-center space-x-4 mb-4">
+                    <img
+                      src={selectedIdea.author?.avatar}
+                      alt={selectedIdea.author?.username}
+                      className="w-12 h-12 rounded-full border-2 border-primary-500"
+                    />
+                    <div>
+                      <p className="text-white font-semibold">{selectedIdea.author?.username}</p>
+                      <p className="text-sm text-gray-400">
+                        {new Date(selectedIdea.createdAt).toLocaleDateString('fr-FR', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                    </div>
+                    {getStatusBadge(selectedIdea.status)}
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="mb-6">
+                  <p className="text-gray-300 text-lg leading-relaxed whitespace-pre-wrap">
+                    {selectedIdea.description}
+                  </p>
+                </div>
+
+                {/* Admin comment */}
+                {selectedIdea.adminComment && (
+                  <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                    <div className="flex items-start space-x-2">
+                      <Crown size={20} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-yellow-300 mb-1">Commentaire Admin</p>
+                        <p className="text-sm text-yellow-200 italic">{selectedIdea.adminComment}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Voting */}
+                <div className="flex items-center space-x-4 mb-6 pb-6 border-b border-white/10">
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => handleVote(selectedIdea._id, 'up')}
+                    disabled={!isAuthenticated}
+                    className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all ${
+                      getUserVote(selectedIdea) === 'up'
+                        ? 'bg-green-500/20 text-green-400'
+                        : 'bg-dark-700 text-gray-400 hover:bg-dark-600'
+                    } ${!isAuthenticated && 'opacity-50 cursor-not-allowed'}`}
+                  >
+                    <ThumbsUp size={20} />
+                    <span className="font-semibold">{selectedIdea.upvotesCount || 0}</span>
+                  </motion.button>
+
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => handleVote(selectedIdea._id, 'down')}
+                    disabled={!isAuthenticated}
+                    className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all ${
+                      getUserVote(selectedIdea) === 'down'
+                        ? 'bg-red-500/20 text-red-400'
+                        : 'bg-dark-700 text-gray-400 hover:bg-dark-600'
+                    } ${!isAuthenticated && 'opacity-50 cursor-not-allowed'}`}
+                  >
+                    <ThumbsDown size={20} />
+                    <span className="font-semibold">{selectedIdea.downvotesCount || 0}</span>
+                  </motion.button>
+
+                  <div className={`px-4 py-3 rounded-lg font-bold text-xl ${
+                    selectedIdea.score > 0 ? 'text-green-400' : 
+                    selectedIdea.score < 0 ? 'text-red-400' : 'text-gray-400'
+                  }`}>
+                    Score: {selectedIdea.score > 0 && '+'}{selectedIdea.score}
+                  </div>
+                </div>
+
+                {/* Comments section */}
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                    <MessageCircle size={24} />
+                    <span>Commentaires ({selectedIdea.comments?.length || 0})</span>
+                  </h3>
+
+                  {/* Add comment */}
+                  {isAuthenticated ? (
+                    <div className="mb-6">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={commentText}
+                          onChange={(e) => setCommentText(e.target.value)}
+                          placeholder="Ajoute ton commentaire..."
+                          className="flex-1 bg-white border border-gray-300 rounded-lg px-4 py-3 !text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleAddComment(selectedIdea._id);
+                            }
+                          }}
+                        />
+                        <motion.button
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleAddComment(selectedIdea._id)}
+                          className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-semibold transition-colors"
+                        >
+                          Envoyer
+                        </motion.button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-gray-400 mb-4 italic">Connecte-toi pour commenter</p>
+                  )}
+
+                  {/* Comments list */}
+                  <div className="space-y-4 max-h-60 overflow-y-auto">
+                    {selectedIdea.comments && selectedIdea.comments.length > 0 ? (
+                      selectedIdea.comments.map((comment, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="bg-dark-700/50 rounded-lg p-4"
+                        >
+                          <div className="flex items-start space-x-3">
+                            <img
+                              src={comment.author?.avatar}
+                              alt={comment.author?.username}
+                              className="w-10 h-10 rounded-full border-2 border-primary-500/30"
+                            />
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <p className="font-semibold text-white">{comment.author?.username}</p>
+                                <span className="text-xs text-gray-500">
+                                  {new Date(comment.createdAt).toLocaleDateString('fr-FR')}
+                                </span>
+                              </div>
+                              <p className="text-gray-300">{comment.content}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 text-center py-8 italic">
+                        Aucun commentaire pour le moment. Sois le premier ! 🎙️
+                      </p>
+                    )}
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
           )}

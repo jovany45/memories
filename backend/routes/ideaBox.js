@@ -3,6 +3,7 @@ import {
   getAllIdeas,
   createIdea,
   voteIdea,
+  addComment,
   deleteIdea,
   updateIdeaStatus,
   getIdeaStats
@@ -19,6 +20,7 @@ router.get('/stats', getIdeaStats);
 // Protected routes
 router.post('/', authenticate, createIdea);
 router.post('/:id/vote', authenticate, voteIdea);
+router.post('/:id/comment', authenticate, addComment);
 router.delete('/:id', authenticate, deleteIdea);
 
 // Admin routes
