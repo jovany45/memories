@@ -36,18 +36,18 @@ const IdeaBox = () => {
   ];
 
   const sarcasticTitles = [
-    "💡 La Boîte à Idées™ (Où les rêves meurent)",
-    "🎪 Le Cirque des Propositions Impossibles",
-    "🗑️ La Décharge Intellectuelle Officielle",
-    "🎭 Le Théâtre de l'Absurde Participatif",
-    "☠️ Le Cimetière des Bonnes Intentions"
+    "💡 Proposez des idées pour améliorer la vie à 2ISA",
+    "🎯 Vos Idées pour Améliorer le Centre 2ISA",
+    "🌟 Boîte à Suggestions - Centre 2ISA",
+    "💭 Partagez vos Idées d'Amélioration",
+    "✨ Suggestions pour le Centre 2ISA"
   ];
 
   const sarcasticSubtitles = [
-    "Parce que se plaindre, c'est déjà faire quelque chose... non ?",
-    "Vos idées sont importantes pour nous (promis on rigole pas)",
-    "La démocratie participative version procrastination",
-    "On écoute tout ! (et on ignore 99%)",
+    "Votre avis compte pour améliorer la vie au centre",
+    "Ensemble, construisons un meilleur environnement",
+    "Vos suggestions nous aident à progresser",
+    "Partagez vos idées, votez pour celles des autres",
     "Contribuez à améliorer... absolument rien probablement"
   ];
 
