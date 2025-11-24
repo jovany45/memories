@@ -14,9 +14,9 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
+import { complaintAPI } from '../api';
 
 const ComplaintBox = () => {
   const { user } = useAuth();
@@ -65,8 +65,8 @@ const ComplaintBox = () => {
 
   const fetchComplaints = async () => {
     try {
-      const response = await axios.get('/api/complaints');
-      setComplaints(response.data.complaints || []);
+      const data = await complaintAPI.getComplaints();
+      setComplaints(data.complaints || []);
     } catch (error) {
       console.error('Error fetching complaints:', error);
       toast.error('Erreur lors du chargement des plaintes');
@@ -84,8 +84,8 @@ const ComplaintBox = () => {
     }
 
     try {
-      const response = await axios.post('/api/complaints', newComplaint);
-      toast.success(response.data.message);
+      const data = await complaintAPI.createComplaint(newComplaint);
+      toast.success(data.message);
       setNewComplaint({ content: '', category: 'autre' });
       fetchComplaints();
     } catch (error) {
@@ -101,8 +101,8 @@ const ComplaintBox = () => {
     }
 
     try {
-      const response = await axios.post(`/api/complaints/${complaintId}/vote`, { voteType });
-      toast.success(response.data.message);
+      const data = await complaintAPI.voteComplaint(complaintId, voteType);
+      toast.success(data.message);
       fetchComplaints();
     } catch (error) {
       console.error('Error voting:', error);
@@ -123,8 +123,8 @@ const ComplaintBox = () => {
     }
 
     try {
-      const response = await axios.post(`/api/complaints/${complaintId}/comment`, { content });
-      toast.success(response.data.message);
+      const data = await complaintAPI.addComment(complaintId, content);
+      toast.success(data.message);
       setCommentInputs({ ...commentInputs, [complaintId]: '' });
       fetchComplaints();
     } catch (error) {
@@ -217,7 +217,7 @@ const ComplaintBox = () => {
                 onChange={(e) => setNewComplaint({ ...newComplaint, content: e.target.value })}
                 placeholder="Exprime ton mécontentement sur la vie au centre 2ISA (nourriture, locaux, organisation, services...)... personne ne saura que c'est toi ! 😈"
                 rows={4}
-                className="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+                className="w-full bg-dark/50 border border-gray-700 rounded-lg px-4 py-3 !text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
               />
             </div>
 
@@ -383,7 +383,7 @@ const ComplaintBox = () => {
                                 value={commentInputs[complaint._id] || ''}
                                 onChange={(e) => setCommentInputs({ ...commentInputs, [complaint._id]: e.target.value })}
                                 placeholder="Ajoute ton commentaire..."
-                                className="flex-1 bg-dark/50 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="flex-1 bg-dark/50 border border-gray-700 rounded-lg px-4 py-2 text-sm !text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
                                 onKeyPress={(e) => {
                                   if (e.key === 'Enter') {
                                     handleAddComment(complaint._id);

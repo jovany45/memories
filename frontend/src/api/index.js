@@ -220,3 +220,31 @@ export const adminAPI = {
   }
 };
 
+// Complaint Box API
+export const complaintAPI = {
+  getComplaints: async (params = {}) => {
+    const response = await api.get('/complaints', { params });
+    return response.data;
+  },
+
+  createComplaint: async (complaintData) => {
+    const response = await api.post('/complaints', complaintData);
+    return response.data;
+  },
+
+  voteComplaint: async (complaintId, voteType) => {
+    const response = await api.post(`/complaints/${complaintId}/vote`, { voteType });
+    return response.data;
+  },
+
+  addComment: async (complaintId, content) => {
+    const response = await api.post(`/complaints/${complaintId}/comments`, { content });
+    return response.data;
+  },
+
+  getComplaintStats: async () => {
+    const response = await api.get('/complaints/stats');
+    return response.data;
+  }
+};
+
